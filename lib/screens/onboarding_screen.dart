@@ -1,5 +1,75 @@
 import 'package:experiment/extentions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUser();
+  }
+
+  Future<void> _checkUser() async {
+    // Simulate a delay for the splash screen effect
+    await Future.delayed(const Duration(seconds: 5));
+
+    User? user = _auth.currentUser;
+    if (user != null) {
+      // User is signed in, go to HomeScreen
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    } else {
+      // User is not signed in, go to AuthScreen
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //build splash screen
+    return Scaffold(
+      backgroundColor: Colors.orange, //splash screen background color
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // You can replace this with your app's logo
+            Image.asset(
+              'assets/images/hb/logo.png', // Replace with your logo asset path
+              width: 150,
+              height: 150,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Food App', // Replace with your app's name
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class OnboardingScreen extends StatefulWidget {
   @override
