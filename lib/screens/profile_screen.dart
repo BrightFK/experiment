@@ -65,62 +65,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20), // Increased padding
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
             // Profile Header
             Container(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 16), // Added padding to the container
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                    12), // Rounded corners for the container
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 2),
-                    blurRadius: 8,
-                    color: Colors.grey.withOpacity(
-                        0.2), // Subtle shadow for depth
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding:
-                    EdgeInsets.only(left: 16.0), // Padding for the avatar
-                    child: CircleAvatar(
-                      radius:
-                      40, // Increased radius for a larger avatar.
-                      backgroundImage:
-                      AssetImage("assets/images/people/deb.png"), // Replace
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _username ??
-                            'Loading...', // Show "Loading" if username is null
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight
-                                .w600), // Increased font size and weight
-                      ),
-                      Text(
-                        _user?.email != null
-                            ? _obscureEmail(_user!.email!)
-                            : 'No Email', // Show obscured email or "No Email"
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors
-                                .grey[600]), // Use the grey color from your design
+              height: 100,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16), // Added padding to the container
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                        12), // Rounded corners for the container
+                    boxShadow: [
+                      BoxShadow(
+                        offset: const Offset(0, 2),
+                        blurRadius: 8,
+                        color: Colors.grey.withOpacity(
+                            0.2), // Subtle shadow for depth
                       ),
                     ],
                   ),
-                ],
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding:
+                        EdgeInsets.only(left: 16.0), // Padding for the avatar
+                        child: CircleAvatar(
+                          radius:
+                          40, // Increased radius for a larger avatar.
+                          backgroundImage:
+                          AssetImage("assets/images/people/deb.png"), // Replace
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _username ??
+                                'Loading...', // Show "Loading" if username is null
+                            style: const TextStyle(
+                                fontSize: 20,
+                                overflow: TextOverflow.fade,
+                                fontWeight: FontWeight
+                                    .w600), // Increased font size and weight
+                          ),
+                          Text(
+                            _user?.email != null
+                                ? _obscureEmail(_user!.email!)
+                                : 'No Email', // Show obscured email or "No Email"
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors
+                                    .grey[600]), // Use the grey color from your design
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),]
               ),
             ),
             const SizedBox(height: 32),

@@ -1,6 +1,6 @@
 import 'package:experiment/extentions.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,6 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
     _checkUser();
   }
 
+  int _currentIndex = 0;
+
   Future<void> _checkUser() async {
     // Simulate a delay for the splash screen effect
     await Future.delayed(const Duration(seconds: 5));
@@ -27,7 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
       // User is signed in, go to HomeScreen
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(
+              builder: (context) => Nav(
+                  selectedIndex: _currentIndex,
+                  onIndexChanged: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  })),
         );
       }
     } else {
@@ -99,17 +108,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             buildPage(
               img: "assets/images/hb/hb5.jpeg",
               title: 'We Serve Incomparable Delicacies',
-              subtitle: "All the best restaurants with their top menu waiting for you, they can't wait for your order!",
+              subtitle:
+                  "All the best restaurants with their top menu waiting for you, they can't wait for your order!",
             ),
             buildPage(
               img: "assets/images/hb/hb6.jpeg",
               title: 'We Serve Incomparable Delicacies',
-              subtitle: "All the best restaurants with their top menu waiting for you, they can't wait for your order!",
+              subtitle:
+                  "All the best restaurants with their top menu waiting for you, they can't wait for your order!",
             ),
             buildPage(
               img: "assets/images/hb/hb7.jpeg",
               title: 'We Serve Incomparable Delicacies',
-              subtitle: "All the best restaurants with their top menu waiting for you, they can't wait for your order!",
+              subtitle:
+                  "All the best restaurants with their top menu waiting for you, they can't wait for your order!",
             ),
           ],
         ),
@@ -124,15 +136,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(img), fit: BoxFit.fitHeight)
-      ),
+          image:
+              DecorationImage(image: AssetImage(img), fit: BoxFit.fitHeight)),
       child: Center(
         child: Container(
           padding: EdgeInsets.all(30),
           decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.all(Radius.circular(50))
-          ),
+              color: Colors.orange,
+              borderRadius: BorderRadius.all(Radius.circular(50))),
           width: 400,
           height: 500,
           child: Column(
@@ -140,7 +151,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(title,
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,)),
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  )),
               SizedBox(height: 10),
               Text(subtitle,
                   textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
@@ -149,48 +163,51 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               isLastPage
                   ? SizedBox(
-                height: 80,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate to home or login screen
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => AuthScreen()),
-                    );
-                  },
-                  child: Icon(Icons.arrow_forward_outlined, size: 40,),
-                ),
-              )
-                  : Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      child: Text('Skip'),
-                      onPressed: () => controller.jumpToPage(2),
-                    ),
-                    Center(
-                      child: SmoothPageIndicator(
-                        controller: controller,
-                        count: 3,
-                        effect: WormEffect(
-                          dotHeight: 10,
-                          dotWidth: 10,
-                          activeDotColor: Colors.white,
+                      height: 80,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Navigate to home or login screen
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (_) => AuthScreen()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.arrow_forward_outlined,
+                          size: 40,
                         ),
                       ),
-                    ),
-                    TextButton(
-                      child: Text('Next'),
-                      onPressed: () => controller.nextPage(
-                        duration: Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
+                    )
+                  : Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      height: 50,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            child: Text('Skip'),
+                            onPressed: () => controller.jumpToPage(2),
+                          ),
+                          Center(
+                            child: SmoothPageIndicator(
+                              controller: controller,
+                              count: 3,
+                              effect: WormEffect(
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                activeDotColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            child: Text('Next'),
+                            onPressed: () => controller.nextPage(
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.easeInOut,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),
